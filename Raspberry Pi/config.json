@@ -1,11 +1,11 @@
 {
 	"yo": {
-		"apiAccountKey" : "[your yo account key here]"
+		"apiAccountKey" : "[the pinball machine's Yo API account key here]"
 	},
 	"relayr" : {
-		"appId" : "[your relayr app id here]",
-		"devId": "[your device id here]",
-		"token":  "[your token here]"
+		"appId" : "[your relayr API app id here]",
+		"devId": "[your light/prox device id here]",
+		"token":  "[your API token here]"
 	},
 	"azure" : {
 		"dequeueUrl" : "https://[your-service-name].azure-mobile.net/api/dequeue"
