@@ -1,12 +1,13 @@
 var relayr = require('relayr');
-var yo = require('yohoho')('[your yo account key here]');
+var config = require('./config.json');
+var yo = require('yohoho')(config.yo.apiAccountKey);
 var request = require('request');
 
 //connect to relayr pubnub cloud
 var relayrKeys = {
-  app_id: '[your relayr app id here]',
-  dev_id: '[your device id here]',
-  token:  '[your token here]'
+  app_id: config.relayr.appId,
+  dev_id: config.relayr.devId,
+  token:  config.relayr.token
 };
 relayr.connect(relayrKeys);
 
@@ -48,10 +49,19 @@ relayr.listen(function(err,data)
     //if nothing nearby for more than one minute, send a Yo
     if (data.ts - tsMachineAvailable > 1000 * 60)
     {
-      //TODO: pop user from Azure WaitingList and send "Yo" to this user
-      //FORNOW: sends "Yo" to all followers
-      console.log('sending Yo...');
-      yo.yoAll(function (err, success) { });
+      //pop user from Azure WaitingList and send "Yo" to this user
+
+      request.get({ url : config.azure.dequeueUrl, json : true }, function (error, response, result) {
+        if (result.length == 0) {
+          //no user on waiting list
+          //wait for 30 seconds before reading the waiting list again
+          tsMachineAvailable = data.ts + 1000 * 30;
+          return;
+        }
+
+        console.log('sending Yo to user ' + result[0].username);
+        yo.yo(result[0].username, function (err, success) { });
+      });
 
       //now wait for 3 minutes before checking again
       tsMachineAvailable = data.ts + 1000 * 60 * 3;

@@ -1,0 +1,13 @@
+{
+	"yo": {
+		"apiAccountKey" : "[your yo account key here]"
+	},
+	"relayr" : {
+		"appId" : "[your relayr app id here]",
+		"devId": "[your device id here]",
+		"token":  "[your token here]"
+	},
+	"azure" : {
+		"dequeueUrl" : "https://[your-service-name].azure-mobile.net/api/dequeue"
+	}
+}
